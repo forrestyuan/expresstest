@@ -2,6 +2,8 @@
  * Created by onelife on 2017/11/9.
  */
 var express = require('express');
+var fortune = require('./libs/fortune.js');
+
 var app = express();
 //设置handlebars 试图引擎
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -9,14 +11,6 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', process.env.PORT || 3000);
 
-//数据区
-var fortunes = [
-    "Conquer your fears or they will conquer you .",
-    "Rivers need spring .",
-    "Do not fear what you don't konw",
-    "You will have a pleasent surprise",
-    "Whenever possible, Keep it simple"
-]
 //加载静态资源
 app.use(express.static(__dirname+"/public"));
 //路由网页
@@ -30,7 +24,7 @@ app.get('/about',function (req, res) {
     /*res.type('text/plain');
     res.send('about meadowlark travel');*/
     var randomFortune = fortunes[Math.floor(Math.random()*fortunes.length)];
-    res.render('about',{fortune:randomFortune});
+    res.render('about',{fortune:fortune.getFortune()});
 });
 
 //定制404 页面
